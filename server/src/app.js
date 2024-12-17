@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import http from "http";
+import 'dotenv/config';
 
 const app = express();
 const server = http.createServer(app);
