@@ -1,27 +1,40 @@
 import db from '../config/database.js';
+import HttpException from '../exceptions/http-exception.js';
 
 class UserRepository {
   async getUserById(userId) {
     try {
       const res = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
-      return res.rows[0]; 
+      if (res.rows.length === 0) {
+        throw new HttpException(404, 'User not found');
+      }
+      return res.rows[0];
     } catch (error) {
-      console.error('Error fetching user:', error);
-      throw error;
+      throw new HttpException(500, 'Internal server error');
     }
   }
 
   async createUser(userData) {
+    const client = await db.connect();
     try {
+      await client.query('BEGIN');
+
       const { name, email, password } = userData;
-      const res = await db.query(
+      const res = await client.query(
         'INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *',
         [name, email, password]
       );
-      return res.rows[0]; 
+
+      const newUser = res.rows[0];
+
+      await client.query('COMMIT');
+      return newUser;
+
     } catch (error) {
-      console.error('Error creating user:', error);
-      throw error;
+      await client.query('ROLLBACK');
+      throw new HttpException(500, 'Internal server error');
+    } finally {
+      client.release();
     }
   }
 
@@ -31,9 +44,9 @@ class UserRepository {
       return res.rows;
     } catch (error) {
       console.error('Error fetching users:', error);
-      throw error;
+      throw new HttpException(500, 'Internal server error');
     }
   }
 }
 
-export default UserRepository;
+export default new UserRepository();
