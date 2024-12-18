@@ -30,4 +30,21 @@ export default class AuthService {
       }
     }
   }
+
+  async register(user) {
+    try {
+      const existingUser = await this.userRepository.findUserByEmail(user.email);
+      if (existingUser) {
+        throw new HttpException(409, 'User already exists');
+      }
+      const newUser = await this.userRepository.createUser(user);
+      return newUser;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new HttpException(500, 'An error occurred while registering user');
+      }
+    }
+  }
 }
