@@ -1,6 +1,6 @@
-import HttpException from '../exceptions/http-excepiton';
-import TokenHelper from '../helper/token-helper';
-import UserRepository from '../repository/user-repository';
+import HttpException from '../exceptions/http-exception.js';
+import TokenHelper from '../helper/token-helper.js';
+import UserRepository from '../repository/user-repository.js';
 
 export default class AuthService {
   constructor() {

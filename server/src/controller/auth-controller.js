@@ -1,4 +1,4 @@
-import HttpException from '../exceptions/http-excepiton.js';
+import HttpException from '../exceptions/http-exception.js';
 import AuthService from '../service/auth-service.js';
 
 export default class AuthController {
