@@ -1,4 +1,5 @@
 import HttpException from '../exceptions/http-exception.js';
+import PasswordHelper from '../helper/password-helper.js';
 import TokenHelper from '../helper/token-helper.js';
 import UserRepository from '../repository/user-repository.js';
 
@@ -37,7 +38,12 @@ export default class AuthService {
       if (existingUser) {
         throw new HttpException(409, 'User already exists');
       }
-      const newUser = await this.userRepository.createUser(user);
+      const newUser = {
+        username: user.username,
+        email: user.email,
+        password: await PasswordHelper.hashPassword(user.password),
+      };
+      await this.userRepository.createUser(newUser);
       return newUser;
     } catch (error) {
       if (error instanceof HttpException) {
