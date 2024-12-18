@@ -11,7 +11,7 @@ import { createSocketServer } from './socket.js';
 import authRoutes from './routes/auth-routes.js';
 
 const envFile =
-    process.env.NODE_ENV === 'development' ? '.env.development' : '.env';
+  process.env.NODE_ENV === 'development' ? '.env.development' : '.env';
 dotenv.config({ path: envFile });
 
 const app = express();
@@ -26,5 +26,5 @@ app.use('/api/auth', authRoutes);
 createSocketServer(server);
 
 server.listen(process.env.SERVER_PORT || 1234, () => {
-    console.log('Server running on port 1234');
+  console.log('Server running on port 1234');
 });
