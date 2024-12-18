@@ -53,4 +53,25 @@ export default class AuthService {
       }
     }
   }
+
+  async verifyUser(token) {
+    try {
+      const decodedToken = this.tokenHelper.verifyAccessToken(token);
+      const user = await this.userRepository.findUserById(decodedToken.id);
+      if (!user) {
+        throw new HttpException(404, 'User not found');
+      }
+      return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new HttpException(500, 'An error occurred while verifying user');
+      }
+    }
+  }
 }
