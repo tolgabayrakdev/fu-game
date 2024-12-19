@@ -16,27 +16,25 @@ export default function Home() {
   const navigate = useNavigate()
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
-  
-  // Form states
+
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: ""
   })
-  
+
   const [registerForm, setRegisterForm] = useState({
     username: "",
     email: "",
     password: ""
   })
 
-  // Loading states
   const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [isRegisterLoading, setIsRegisterLoading] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoginLoading(true)
-    
+
     try {
       const response = await fetch('http://localhost:1234/api/auth/login', {
         method: 'POST',
@@ -44,17 +42,15 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(loginForm),
-        credentials: 'include' // Cookie'leri almak için
+        credentials: 'include'
       })
 
       const data = await response.json()
 
       if (response.ok) {
-        // Başarılı giriş
         setIsLoginOpen(false)
-        navigate('/dashboard') // veya başka bir sayfaya yönlendir
+        navigate('/dashboard')
       } else {
-        // Hata durumu
         alert(data.message || 'Giriş başarısız')
       }
     } catch (error) {
@@ -100,7 +96,7 @@ export default function Home() {
       <div className="text-center space-y-6">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Fu Game</h1>
         <p className="text-lg text-gray-600 mb-8">Eğlenceli oyun dünyasına hoş geldiniz!</p>
-        
+
         <div className="space-x-4">
           <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
             <DialogTrigger asChild>
@@ -119,23 +115,23 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input 
-                      id="email" 
-                      type="email" 
+                    <Input
+                      id="email"
+                      type="email"
                       placeholder="ornek@email.com"
                       value={loginForm.email}
-                      onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
+                      onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                       required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password">Şifre</Label>
-                    <Input 
-                      id="password" 
+                    <Input
+                      id="password"
                       type="password"
                       placeholder="********"
                       value={loginForm.password}
-                      onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                      onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                       required
                     />
                   </div>
@@ -164,34 +160,34 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="username">Kullanıcı Adı</Label>
-                    <Input 
-                      id="username" 
-                      type="text" 
+                    <Input
+                      id="username"
+                      type="text"
                       placeholder="kullaniciadi"
                       value={registerForm.username}
-                      onChange={(e) => setRegisterForm({...registerForm, username: e.target.value})}
+                      onChange={(e) => setRegisterForm({ ...registerForm, username: e.target.value })}
                       required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-email">Email</Label>
-                    <Input 
-                      id="register-email" 
-                      type="email" 
+                    <Input
+                      id="register-email"
+                      type="email"
                       placeholder="ornek@email.com"
                       value={registerForm.email}
-                      onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})}
+                      onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
                       required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-password">Şifre</Label>
-                    <Input 
-                      id="register-password" 
+                    <Input
+                      id="register-password"
                       type="password"
                       placeholder="********"
                       value={registerForm.password}
-                      onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
+                      onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
                       required
                     />
                   </div>
