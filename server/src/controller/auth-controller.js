@@ -50,7 +50,7 @@ export default class AuthController {
     try {
       const token = req.cookies.access_token;
       const user = await this.authService.verifyUser(token);
-      res.status(200).json({ "user": user });
+      res.status(200).json({ user: user });
     } catch (error) {
       if (error instanceof HttpException) {
         res.status(error.status).json({ message: error.message });

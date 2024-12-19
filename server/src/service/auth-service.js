@@ -34,7 +34,9 @@ export default class AuthService {
 
   async register(user) {
     try {
-      const existingUser = await this.userRepository.findUserByEmail(user.email);
+      const existingUser = await this.userRepository.findUserByEmail(
+        user.email,
+      );
       if (existingUser) {
         throw new HttpException(409, 'User already exists');
       }
@@ -49,7 +51,10 @@ export default class AuthService {
       if (error instanceof HttpException) {
         throw error;
       } else {
-        throw new HttpException(500, 'An error occurred while registering user');
+        throw new HttpException(
+          500,
+          'An error occurred while registering user',
+        );
       }
     }
   }
